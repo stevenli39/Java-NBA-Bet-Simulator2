@@ -9,3 +9,11 @@ how they chose to bet.
 - Those who seek a practice platform to test their wages in a risk free environment will find this application helpful. 
 - As an avid basketball fan and an individual who likes to go against the odds, this project provides the ability
 challenge myself by challenging conventional projects while bringing a passion project to life. 
+
+## **User Story**
+
+- As a user, I want to add a match score onto a list of historic past matches to use in consideration when placing a
+ bet. 
+- As a user, I want to see the results of my wagers and the game stats.
+- As a user, I want to be able to see the amount of earnings or losses depending on my wager.
+- As a user, I want to see the possible match pairings that are available for wager. 
