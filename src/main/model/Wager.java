@@ -5,9 +5,9 @@ public class Wager {
     Integer amount;
     Match match;
 
-    public Wager(Match m, Integer amount) {
-        amount = 0;
-        m = new Match("", "");
+    public Wager(Match match, Integer amount) {
+        this.amount = amount;
+        this.match = match;
     }
 
     public Match getMatchWagered() {

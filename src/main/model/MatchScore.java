@@ -5,8 +5,8 @@ public class MatchScore {
     Integer score2;
 
     public MatchScore(Integer score1, Integer score2) {
-        this.score1 = 0;
-        this.score2 = 0;
+        this.score1 = score1;
+        this.score2 = score2;
     }
 
     public Integer getScore1() {

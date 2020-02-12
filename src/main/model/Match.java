@@ -6,8 +6,8 @@ public class Match {
     String team2;
 
     public Match(String team1, String team2) {
-        this.team1 = "";
-        this.team2 = "";
+        this.team1 = team1;
+        this.team2 = team2;
     }
 
     public String getTeam1() {
@@ -18,4 +18,3 @@ public class Match {
         return team2;
     }
 }
-
