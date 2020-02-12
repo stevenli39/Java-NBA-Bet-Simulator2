@@ -13,6 +13,7 @@ public class Wager {
         return match;
     }
 
+    //
     public Integer getAmountWagered() {
         return amount;
     }
