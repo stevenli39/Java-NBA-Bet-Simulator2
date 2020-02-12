@@ -12,8 +12,7 @@ challenge myself by challenging conventional projects while bringing a passion p
 
 ## **User Story**
 
-- As a user, I want to add a match score onto a list of historic past matches to use in consideration when placing a
- bet. 
+- As a user, I want to add all wagers into a list of historical wagers. 
 - As a user, I want to see the results of my wagers and the game stats.
 - As a user, I want to be able to see the amount of earnings or losses depending on my wager.
 - As a user, I want to see the possible match pairings that are available for wager. 
