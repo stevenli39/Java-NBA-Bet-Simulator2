@@ -16,6 +16,7 @@ public class HistoricalWagersTest {
     @Test
     void testConstructor() {
         assertEquals(0, historicalWagers.getNumberOfPreviousWagers());
+        assertEquals("No wagers placed in the past", historicalWagers.linesOfWagers());
     }
 
     @Test
