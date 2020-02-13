@@ -23,6 +23,7 @@ public class MatchesTest {
     void testConstructor() {
         assertEquals(0, matches.getNumberOfMatches());
         assertFalse(matches.containsMatch(match1));
+        assertEquals("No matches today", matches.linesOfMatches());
     }
 
     @Test
@@ -33,6 +34,7 @@ public class MatchesTest {
         assertEquals(2, matches.getNumberOfMatches());
         assertTrue(matches.containsMatch(match1));
         assertFalse(matches.containsMatch(match3));
+        assertEquals("Raptors vs. Warriors\nLakers vs. Clippers\n", matches.linesOfMatches());
     }
 
     @Test
@@ -42,6 +44,7 @@ public class MatchesTest {
 
         assertEquals(0, matches.getNumberOfMatches());
         assertFalse(matches.containsMatch(match1));
+        assertEquals("No matches today", matches.linesOfMatches());
     }
 
 }

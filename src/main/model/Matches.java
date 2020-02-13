@@ -31,4 +31,18 @@ public class Matches {
         return matches.contains(m);
     }
 
+    public String linesOfMatches() {
+        String matchLines = "";
+
+        if (matches.size() > 0) {
+            for (Match m : matches) {
+                matchLines = matchLines + m.getTeam1() + " vs. " + m.getTeam2() + "\n";
+            }
+
+            return matchLines;
+        }
+
+        return "No matches today";
+    }
+
 }
