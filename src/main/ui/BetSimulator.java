@@ -5,26 +5,32 @@ import model.*;
 import java.util.Scanner;
 
 public class BetSimulator {
-    Account userBalance;
-    HistoricalWagers pastWagers;
-    Match match1;
-    Match match2;
-    Matches matches;
-    MatchScores matchScores;
-    Wager wager;
+    private Account account;
+    private HistoricalWagers pastWagers;
+    private Match match1;
+    private Match match2;
+    private Matches matches;
     private Scanner input;
 
 
     public BetSimulator() {
-        runBetSimulator();
+        runBet();
     }
 
-    public void runBetSimulator() {
+    private void runBet() {
         boolean keepGoing = true;
-        String command = null;
+        String command;
         input = new Scanner(System.in);
 
-        loadMatches();
+        pastWagers = new HistoricalWagers();
+        account = new Account();
+        matches = new Matches();
+
+        match1 = new Match("Raptors", "Lakers");
+        match2 = new Match("Kings", "Blazers");
+
+        matches.addMatch(match1);
+        matches.addMatch(match2);
 
         while (keepGoing) {
             displayMenu();
@@ -41,8 +47,6 @@ public class BetSimulator {
 
     }
 
-    private void loadMatches() {
-    }
 
     private void displayMenu() {
         System.out.println("\nSelect from:");
@@ -56,13 +60,126 @@ public class BetSimulator {
     private void processCommand(String command) {
         if (command.equals("b")) {
             bet();
+        } else if (command.equals("c")) {
+            System.out.println("Your balance is currently " + account.getBalance());
+        } else if (command.equals("a")) {
+            addMoney();
+        } else if (command.equals("h")) {
+            System.out.println(pastWagers.linesOfWagers());
+        } else {
+            System.out.println("Selection is not valid...");
         }
     }
 
+
     private void bet() {
         System.out.println("Which match would you like to bet on?");
+        matches.linesOfMatches();
+        System.out.println("Type 1 for Raptors vs. Lakers" + "\n" + "Type 2 for Kings vs. Blazers");
+        Integer matchChosen = input.nextInt();
 
+        if (matchChosen == 1) {
+            betMatch1();
+        } else if (matchChosen == 2) {
+            betMatch2();
+        } else {
+            System.out.println("Please enter a valid match");
+        }
+    }
 
+    private void betMatch1() {
+        System.out.println("Which team would you like to wager on, type 1 for raptors and 2 for lakers ");
+        Integer teamChosen = input.nextInt();
+
+        if (teamChosen == 1) {
+            betRaptors();
+        } else if (teamChosen == 2) {
+            betLakers();
+        } else {
+            System.out.println("Please enter a valid team");
+        }
+    }
+
+    private void betRaptors() {
+        System.out.println("How much do you want to wager, Please enter a positive Integer");
+        Integer wagerAmount = input.nextInt();
+        if (account.getBalance() > wagerAmount) {
+            System.out.println("Your wager has been successfully placed");
+            System.out.println("Raptors won 119-110 against the Lakers");
+            System.out.println("You have doubled your wager");
+            account.addBalance(wagerAmount);
+
+            pastWagers.addWager("Raptors vs. Lakers, $" + wagerAmount);
+        } else {
+            System.out.println("You do not have enough money");
+        }
+    }
+
+    private void betLakers() {
+        System.out.println("How much do you want to wager, Please enter a positive Integer");
+        Integer wagerAmount = input.nextInt();
+        if (account.getBalance() > wagerAmount) {
+            System.out.println("Your wager has been successfully placed");
+            System.out.println("Lakers lost 110-119 against the Raptors");
+            System.out.println("You have lost all of your wager");
+            account.subtractBalance(wagerAmount);
+
+            pastWagers.addWager("Raptors vs. Lakers, $" + wagerAmount);
+        } else {
+            System.out.println("You do not have enough money");
+        }
+    }
+
+    private void betMatch2() {
+        System.out.println("Which team would you like to wager on, 1 for Kings and 2 for Blazers");
+        Integer teamChosen = input.nextInt();
+
+        if (teamChosen == 1) {
+            betKings();
+        } else if (teamChosen == 2) {
+            betBlazers();
+        } else {
+            System.out.println("Please enter a valid team");
+        }
+    }
+
+    private void betKings() {
+        System.out.println("How much do you want to wager, Please enter a positive Integer");
+        Integer wagerAmount = input.nextInt();
+        if (account.getBalance() > wagerAmount) {
+            System.out.println("Your wager has been successfully placed");
+            System.out.println("Kings lost 101-120 against to the Blazers");
+            System.out.println("You have lost all of your wager");
+            account.subtractBalance(wagerAmount);
+
+            pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
+        } else {
+            System.out.println("You do not have enough money");
+        }
+
+    }
+
+    private void betBlazers() {
+        System.out.println("How much do you want to wager, Please enter a positive Integer");
+        Integer wagerAmount = input.nextInt();
+        if (account.getBalance() > wagerAmount) {
+            System.out.println("Your wager has been successfully placed");
+            System.out.println("Blazers won 120-101 against to the Blazers");
+            System.out.println("You have doubled your wager");
+            account.addBalance(wagerAmount);
+
+            pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
+        } else {
+            System.out.println("You do not have enough money");
+        }
+    }
+
+    private void addMoney() {
+        System.out.println("How much money would you like you to add to your balance, Enter a positive Integer");
+        Integer amount = input.nextInt();
+
+        account.addBalance(amount);
+        System.out.println("$" + amount + " has been successfully added to your account");
     }
 
 

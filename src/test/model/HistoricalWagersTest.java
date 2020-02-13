@@ -7,14 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HistoricalWagersTest {
     HistoricalWagers historicalWagers;
-    Wager wager1;
-    Match match1;
 
     @BeforeEach
     void runBefore() {
         historicalWagers = new HistoricalWagers();
-        match1 = new Match("Raptors", "Warriors");
-        wager1 = new Wager(match1, 20);
     }
 
     @Test
@@ -24,8 +20,10 @@ public class HistoricalWagersTest {
 
     @Test
     void testAddWager() {
-        historicalWagers.addWager(wager1);
+        historicalWagers.addWager("Match1, 200");
+        historicalWagers.addWager("Match2, 300");
 
-        assertEquals(1, historicalWagers.getNumberOfPreviousWagers());
+        assertEquals(2, historicalWagers.getNumberOfPreviousWagers());
+        assertEquals("Match1, 200\nMatch2, 300\n", historicalWagers.linesOfWagers());
     }
 }
