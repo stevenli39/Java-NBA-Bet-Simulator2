@@ -18,6 +18,8 @@ public class ReaderTest {
             Account account = accounts.get(0);
             assertEquals(200, account.getBalance());
 
+            Account nextAccount = new Account(500);
+            assertEquals(500, nextAccount.getBalance());
         } catch (IOException e) {
             fail("IOException should not have been thrown");
         }
@@ -30,6 +32,8 @@ public class ReaderTest {
             Account account = accounts.get(0);
             assertEquals(300, account.getBalance());
 
+            Account nextAccount = new Account(400);
+            assertEquals(400, nextAccount.getBalance());
         } catch (IOException e) {
             fail("IOException should not have been thrown");
         }
