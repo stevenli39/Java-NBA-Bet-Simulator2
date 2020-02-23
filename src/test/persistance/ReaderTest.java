@@ -11,10 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReaderTest {
+
     @Test
     void testConstructor() {
-    }
+        Reader reader;
+        reader = new Reader();
 
+        assertEquals(false, reader.equals(2));
+    }
 
     @Test
     void testParseAccountsFile1() {
