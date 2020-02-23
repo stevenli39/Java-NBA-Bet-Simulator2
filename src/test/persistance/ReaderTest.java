@@ -15,8 +15,11 @@ public class ReaderTest {
     void testParseAccountsFile1() {
         try {
             List<Account> accounts = Reader.readAccounts(new File("./data/testAccountFile1.txt"));
-            Account account = accounts.get(0);
-            assertEquals(200, account.getBalance());
+            Account account1 = accounts.get(0);
+            assertEquals(200, account1.getBalance());
+
+            Account account2 = accounts.get(1);
+            assertEquals(300, account2.getBalance());
 
             Account nextAccount = new Account(500);
             assertEquals(500, nextAccount.getBalance());
@@ -31,6 +34,9 @@ public class ReaderTest {
             List<Account> accounts = Reader.readAccounts(new File("./data/testAccountFile2.txt"));
             Account account = accounts.get(0);
             assertEquals(300, account.getBalance());
+
+            Account account2 = accounts.get(1);
+            assertEquals(400, account2.getBalance());
 
             Account nextAccount = new Account(400);
             assertEquals(400, nextAccount.getBalance());
