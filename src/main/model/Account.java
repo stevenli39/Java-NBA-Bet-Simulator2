@@ -1,12 +1,17 @@
 package model;
 
+import persistance.Saveable;
+
+import java.io.PrintWriter;
+
 // User's Account
-public class Account {
+public class Account implements Saveable {
     Integer balance;
 
-    public Account() {
-        balance = 0;
+    public Account(int balance) {
+        this.balance = balance;
     }
+
 
     // REQUIRES: Amount must be a positive Integer
     // MODIFIES: this
@@ -24,5 +29,10 @@ public class Account {
 
     public Integer getBalance() {
         return balance;
+    }
+
+    @Override
+    public void save(PrintWriter printWriter) {
+        printWriter.println(balance);
     }
 }

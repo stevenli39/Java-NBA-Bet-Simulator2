@@ -1,10 +1,18 @@
 package ui;
 
 import model.*;
+import persistance.Reader;
+import persistance.Writer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Scanner;
 
 public class BetSimulator {
+    private static final String ACCOUNTS_FILE = "./data/accounts.txt";
     private Account account;
     private HistoricalWagers pastWagers;
     private Match match1;
@@ -19,11 +27,11 @@ public class BetSimulator {
 
     private void runBet() {
         boolean keepGoing = true;
-        String command;
+        String command = null;
         input = new Scanner(System.in);
 
         pastWagers = new HistoricalWagers();
-        account = new Account();
+        account = new Account(400);
         matches = new Matches();
 
         match1 = new Match("Raptors", "Lakers");
@@ -31,6 +39,8 @@ public class BetSimulator {
 
         matches.addMatch(match1);
         matches.addMatch(match2);
+
+        loadAccounts();
 
         while (keepGoing) {
             displayMenu();
@@ -54,6 +64,7 @@ public class BetSimulator {
         System.out.println("\tc -> check balance");
         System.out.println("\ta -> add balance");
         System.out.println("\th -> view historical bets");
+        System.out.println("\ts -> save account to file");
         System.out.println("\tq -> quit");
     }
 
@@ -64,10 +75,39 @@ public class BetSimulator {
             System.out.println("Your balance is currently " + account.getBalance());
         } else if (command.equals("a")) {
             addMoney();
+        } else if (command.equals("s")) {
+            saveAccounts();
         } else if (command.equals("h")) {
             System.out.println(pastWagers.linesOfWagers());
         } else {
             System.out.println("Selection is not valid...");
+        }
+    }
+
+    private void loadAccounts() {
+        try {
+            List<Account> accounts = Reader.readAccounts(new File(ACCOUNTS_FILE));
+            account = accounts.get(0);
+        } catch (IOException e) {
+            init();
+        }
+    }
+
+    private void init() {
+        account = new Account(200);
+    }
+
+    private void saveAccounts() {
+        try {
+            Writer writer = new Writer(new File(ACCOUNTS_FILE));
+            writer.write(account);
+            writer.close();
+            System.out.println("Accounts saved to file" + ACCOUNTS_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save accounts to file" + ACCOUNTS_FILE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            // this is due to a programming error
         }
     }
 

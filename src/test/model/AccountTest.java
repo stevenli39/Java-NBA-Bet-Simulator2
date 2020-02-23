@@ -11,7 +11,7 @@ class AccountTest {
 
     @BeforeEach
     void runBefore() {
-        account = new Account();
+        account = new Account(0);
     }
 
     @Test

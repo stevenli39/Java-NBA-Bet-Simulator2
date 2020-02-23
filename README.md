@@ -16,3 +16,5 @@ challenge myself by challenging conventional projects while bringing a passion p
 - As a user, I want to see the results of my wagers and the game stats.
 - As a user, I want to be able to see the amount of earnings or losses depending on my wager.
 - As a user, I want to see the possible match pairings that are available for wager. 
+- As a user, I want to save my balance to file.
+- As a user, I want to optionally load my balance file. 
