@@ -12,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReaderTest {
     @Test
+    void testConstructor() {
+    }
+
+
+    @Test
     void testParseAccountsFile1() {
         try {
             List<Account> accounts = Reader.readAccounts(new File("./data/testAccountFile1.txt"));

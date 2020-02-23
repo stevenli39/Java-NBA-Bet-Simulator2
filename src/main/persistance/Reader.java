@@ -12,6 +12,9 @@ import java.util.List;
 public class Reader {
     public static final String DELIMITER = ",";
 
+    public Reader() {
+    }
+
     // EFFECTS returns a list of historicalWagers parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static List<Account> readAccounts(File file) throws IOException {
