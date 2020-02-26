@@ -1,9 +1,12 @@
 package model;
 
+import persistance.Saveable;
+
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 // List of previous wagers
-public class HistoricalWagers {
+public class HistoricalWagers implements Saveable {
     ArrayList<String> pastWagers;
 
     public HistoricalWagers() {
@@ -32,4 +35,11 @@ public class HistoricalWagers {
         return "No wagers placed in the past";
     }
 
+    @Override
+    public void save(PrintWriter printWriter) {
+        for (String i: pastWagers) {
+            printWriter.print(i);
+            printWriter.print("\n");
+        }
+    }
 }

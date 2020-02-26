@@ -1,6 +1,7 @@
 package persistance;
 
 import model.Account;
+import model.HistoricalWagers;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class Reader {
     public Reader() {
     }
 
-    // EFFECTS returns a list of historicalWagers parsed from file; throws
+    // EFFECTS returns a list of accounts parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static List<Account> readAccounts(File file) throws IOException {
         List<String> fileContent = readFile(file);
@@ -54,4 +55,6 @@ public class Reader {
         int balance = Integer.parseInt(components.get(0));
         return new Account(balance);
     }
+
+
 }
