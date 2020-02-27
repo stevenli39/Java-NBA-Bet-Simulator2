@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ReaderTestAccount {
+public class ReaderTest {
 
     @Test
     void testConstructor() {
@@ -49,6 +49,18 @@ public class ReaderTestAccount {
 
             Account nextAccount = new Account(400);
             assertEquals(400, nextAccount.getBalance());
+        } catch (IOException e) {
+            fail("IOException should not have been thrown");
+        }
+    }
+
+    @Test
+    void testParseHistoricalWagersFile1() {
+        try {
+            List<String> pastWagers =
+                    Reader.readFile(new File("./data/testHistoricalWagers1"));
+            assertEquals("Raptors vs. Lakers, $500", pastWagers.get(0));
+            assertEquals("Kings vs. Blazers, $400", pastWagers.get(1));
         } catch (IOException e) {
             fail("IOException should not have been thrown");
         }
