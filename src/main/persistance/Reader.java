@@ -56,5 +56,18 @@ public class Reader {
         return new Account(balance);
     }
 
+    public static List<String> readHistoricalWagers(File file) throws IOException {
+        List<String> fileContent = readFile(file);
+        return parseHistoricalWagersContent(fileContent);
+    }
+
+    private static List<String> parseHistoricalWagersContent(List<String> fileContent) {
+        List<String> pastWagers = new ArrayList<>();
+
+        for (String line : fileContent) {
+            pastWagers.add(line);
+        }
+        return pastWagers;
+    }
 
 }

@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class BetSimulator {
     private static final String ACCOUNTS_FILE = "./data/accounts.txt";
+    private static final String HISTORICAL_FILE = "./data/historicalWagers.txt";
     private Account account;
     private HistoricalWagers pastWagers;
     private Match match1;
@@ -41,6 +42,7 @@ public class BetSimulator {
         matches.addMatch(match2);
 
         loadAccounts();
+        loadHistoricalWagers();
 
         while (keepGoing) {
             displayMenu();
@@ -65,6 +67,7 @@ public class BetSimulator {
         System.out.println("\ta -> add balance");
         System.out.println("\th -> view historical bets");
         System.out.println("\ts -> save account to file");
+        System.out.println("\tsh -> save HistoricalWagers to file");
         System.out.println("\tq -> quit");
     }
 
@@ -77,6 +80,8 @@ public class BetSimulator {
             addMoney();
         } else if (command.equals("s")) {
             saveAccounts();
+        } else if (command.equals("sh")) {
+            saveHistoricalWagers();
         } else if (command.equals("h")) {
             System.out.println(pastWagers.linesOfWagers());
         } else {
@@ -89,12 +94,28 @@ public class BetSimulator {
             List<Account> accounts = Reader.readAccounts(new File(ACCOUNTS_FILE));
             account = accounts.get(0);
         } catch (IOException e) {
-            init();
+            initAccounts();
         }
     }
 
-    private void init() {
+    private void initAccounts() {
         account = new Account(200);
+    }
+
+
+    private void loadHistoricalWagers() {
+        try {
+            List<String> historicalWagers = Reader.readHistoricalWagers(new File(HISTORICAL_FILE));
+            for (String i: historicalWagers) {
+                pastWagers.addWager(i);
+            }
+        } catch (IOException e) {
+            initHistoricalWagers();
+        }
+    }
+
+    private void initHistoricalWagers() {
+        pastWagers = new HistoricalWagers();
     }
 
     private void saveAccounts() {
@@ -111,6 +132,19 @@ public class BetSimulator {
         }
     }
 
+    private void saveHistoricalWagers() {
+        try {
+            Writer writer = new Writer(new File(HISTORICAL_FILE));
+            writer.write(pastWagers);
+            writer.close();
+            System.out.println("HistoricalWagers saved to file" + HISTORICAL_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save HistoricalWagers to file" + HISTORICAL_FILE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            // this is due to a programming error
+        }
+    }
 
     private void bet() {
         System.out.println("Which match would you like to bet on?");
