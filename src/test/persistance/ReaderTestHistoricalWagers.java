@@ -1,6 +1,5 @@
 package persistance;
 
-import model.Account;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -24,7 +23,7 @@ public class ReaderTestHistoricalWagers {
     void testParseHistoricalWagersFile1() {
         try {
             List<String> pastWagers =
-                    Reader.readHistoricalWagers(new File("./data/testHistoricalWagers1"));
+                    Reader.readFile(new File("./data/testHistoricalWagers1"));
             assertEquals("Raptors vs. Lakers, $500", pastWagers.get(0));
             assertEquals("Kings vs. Blazers, $400", pastWagers.get(1));
         } catch (IOException e) {

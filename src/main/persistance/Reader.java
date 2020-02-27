@@ -25,7 +25,7 @@ public class Reader {
 
     // EFFECTS: return the content of the file as a string, representing
     // the data for the account saved 
-    private static List<String> readFile(File file) throws IOException {
+    public static List<String> readFile(File file) throws IOException {
         return Files.readAllLines(file.toPath());
     }
 
@@ -56,18 +56,18 @@ public class Reader {
         return new Account(balance);
     }
 
-    public static List<String> readHistoricalWagers(File file) throws IOException {
-        List<String> fileContent = readFile(file);
-        return parseHistoricalWagersContent(fileContent);
-    }
-
-    private static List<String> parseHistoricalWagersContent(List<String> fileContent) {
-        List<String> pastWagers = new ArrayList<>();
-
-        for (String line : fileContent) {
-            pastWagers.add(line);
-        }
-        return pastWagers;
-    }
+//    public static List<String> readHistoricalWagers(File file) throws IOException {
+//        List<String> fileContent = readFile(file);
+//        return parseHistoricalWagersContent(fileContent);
+//    }
+//
+//    private static List<String> parseHistoricalWagersContent(List<String> fileContent) {
+//        List<String> pastWagers = new ArrayList<>();
+//
+//        for (String line : fileContent) {
+//            pastWagers.add(line);
+//        }
+//        return pastWagers;
+//    }
 
 }

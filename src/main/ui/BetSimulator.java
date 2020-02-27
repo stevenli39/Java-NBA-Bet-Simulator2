@@ -105,7 +105,7 @@ public class BetSimulator {
 
     private void loadHistoricalWagers() {
         try {
-            List<String> historicalWagers = Reader.readHistoricalWagers(new File(HISTORICAL_FILE));
+            List<String> historicalWagers = Reader.readFile(new File(HISTORICAL_FILE));
             for (String i: historicalWagers) {
                 pastWagers.addWager(i);
             }
