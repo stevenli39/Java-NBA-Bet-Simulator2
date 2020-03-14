@@ -17,6 +17,14 @@ public class HistoricalWagers implements Saveable {
         pastWagers.add(wager);
     }
 
+    public Boolean containsWager(String w) {
+        return pastWagers.contains(w);
+    }
+
+    public String getWager(Integer i) {
+        return pastWagers.get(i);
+    }
+
     public Integer getNumberOfPreviousWagers() {
         return pastWagers.size();
     }

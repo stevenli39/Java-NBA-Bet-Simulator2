@@ -26,5 +26,8 @@ public class HistoricalWagersTest {
 
         assertEquals(2, historicalWagers.getNumberOfPreviousWagers());
         assertEquals("Match1, 200\nMatch2, 300\n", historicalWagers.linesOfWagers());
+        assertEquals("Match1, 200", historicalWagers.getWager(0));
+        assertTrue(historicalWagers.containsWager("Match1, 200"));
+        assertFalse(historicalWagers.containsWager("fsa"));
     }
 }
