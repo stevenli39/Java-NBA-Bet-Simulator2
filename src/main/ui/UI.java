@@ -55,6 +55,7 @@ public class UI extends Application {
     Button kvbBetButton2 = new Button();
     Button accountButton2 = new Button();
     Button accountButton = new Button();
+    Button accountButton3 = new Button();
     Stage window;
     Scene mainScene;
     Scene betScene;
@@ -106,7 +107,8 @@ public class UI extends Application {
         kingsVBlazersBetButtons();
         kingsVBlazersBetScene();
         accountFunctionsGrid();
-        accountButtons();
+        accountButtonAddBalance();
+        accountButtonSubtractBalance();
         accountScene();
         mainScreenInitialization();
 
@@ -146,10 +148,13 @@ public class UI extends Application {
         }
     }
 
-    private Boolean isInt(TextField input, String message) {
+    private Boolean isPositiveInt(TextField input, String message) {
         try {
             int betAmount = Integer.parseInt(input.getText());
-            return true;
+            if (betAmount > 0) {
+                return true;
+            }
+            return false;
         } catch (NumberFormatException e) {
             System.out.println("Error: " + message + " is not an Integer");
             return false;
@@ -320,12 +325,12 @@ public class UI extends Application {
         rvlBetButton1.setOnAction(e -> window.setScene(mainScene));
         rvlBetButton2.setText("Bet");
         rvlBetButton2.setOnAction(e -> {
-            if (isInt(rvlAmountInput, rvlAmountInput.getText())) {
+            if (isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
                 pastWagers.addWager("Raptors vs. Lakers " + rvlAmountInput.getText());
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
                 window.setScene(mainScene);
-            } else if (!isInt(rvlAmountInput, rvlAmountInput.getText())) {
+            } else if (!isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
                 AlertBoxMessage.display("Field Error", "Please enter an Integer");
             }
         });
@@ -360,12 +365,12 @@ public class UI extends Application {
         kvbBetButton1.setOnAction(e -> window.setScene(mainScene));
         kvbBetButton2.setText("Bet");
         kvbBetButton2.setOnAction(e -> {
-            if (isInt(kvbAmountInput2, kvbAmountInput2.getText())) {
+            if (isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
                 pastWagers.addWager("Kings vs. Blazers " + kvbAmountInput2.getText());
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
                 window.setScene(mainScene);
-            } else if (!isInt(kvbAmountInput2, kvbAmountInput2.getText())) {
+            } else if (!isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
                 AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
             }
         });
@@ -396,20 +401,34 @@ public class UI extends Application {
         balanceLabel4.setText("Your balance is: " + "$ " + account.getBalance());
     }
 
-    private void accountButtons() {
+    private void accountButtonAddBalance() {
         accountButton.setText("Add Amount");
         accountButton2.setText("Back to Main Menu");
         accountButton2.setOnAction(e -> window.setScene(mainScene));
         accountButton.setOnAction(e -> {
-            if (isInt(accountInput1, accountInput1.getText())) {
+            if (isPositiveInt(accountInput1, accountInput1.getText())) {
                 account.addBalance(Integer.parseInt(accountInput1.getText()));
                 window.setScene(mainScene);
                 balanceLabel4.setText("Your balance is: " + "$ " + account.getBalance());
-
                 AlertBoxMessage.display("Confirmation",
                         "$ " + accountInput1.getText() + " has been added to your account!");
+            } else if (!isPositiveInt(accountInput1, accountInput1.getText())) {
+                AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
+            }
+        });
+    }
+
+    private void accountButtonSubtractBalance() {
+        accountButton3.setText("Withdrawal");
+        accountButton3.setOnAction(e -> {
+            if ((isPositiveInt(accountInput1, accountInput1.getText()))
+                    && (account.getBalance() > (Integer.parseInt(accountInput1.getText())))) {
+                account.subtractBalance((Integer.parseInt(accountInput1.getText())));
                 window.setScene(mainScene);
-            } else if (!isInt(kvbAmountInput2, kvbAmountInput2.getText())) {
+                balanceLabel4.setText("Your balance is: " + "$" + account.getBalance());
+                AlertBoxMessage.display("Confirmation",
+                        "$ " + accountInput1.getText() + " has been withdrawn from your account!");
+            } else if (isPositiveInt(accountInput1, accountInput1.getText())) {
                 AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
             }
         });
@@ -419,7 +438,9 @@ public class UI extends Application {
         GridPane.setConstraints(accountButton, 1, 1);
         GridPane.setConstraints(balanceLabel4, 1, 3);
         GridPane.setConstraints(accountButton2, 1, 5);
-        accountGrid.getChildren().addAll(accountAmount1, accountButton, accountButton2, accountInput1, balanceLabel4);
+        GridPane.setConstraints(accountButton3, 1, 2);
+        accountGrid.getChildren().addAll(accountAmount1, accountButton, accountButton2, accountButton3,
+                accountInput1, balanceLabel4);
         accountScene = new Scene(accountGrid, 500, 350);
     }
 
