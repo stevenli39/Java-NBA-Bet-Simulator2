@@ -90,8 +90,8 @@ public class UI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-        loadAccounts();
         loadHistoricalWagers();
+        loadAccounts();
         programImage();
         programSound();
         mainScreenButtons();
@@ -111,7 +111,7 @@ public class UI extends Application {
         accountButtonSubtractBalance();
         accountScene();
         mainScreenInitialization();
-
+        producePastWagerLabels();
     }
 
     private void closeProgram() {
@@ -234,7 +234,6 @@ public class UI extends Application {
         msButton1.setOnAction(e -> window.setScene(betScene));
         msButton2.setOnAction(e -> window.setScene(accountScene));
         msButton3.setOnAction(e -> {
-            producePastWagerLabels();
             layout5 = new VBox(20);
             layout5.setAlignment(Pos.CENTER);
             layout5.getChildren().add(rvlBetButton1);
@@ -259,7 +258,7 @@ public class UI extends Application {
         StackPane layout = new StackPane();
         layout.getChildren().addAll(iv, msButton1, msButton2, msButton3, msButton5, msButton4);
         msButton1.setTranslateY(-150.0);
-        msButton2.setTranslateY(-75.0);
+        msButton2.setTranslateY(-70.0);
         msButton5.setTranslateY(75.0);
         msButton4.setTranslateY(150.0);
         mainScene = new Scene(layout, 500, 350);
@@ -327,9 +326,10 @@ public class UI extends Application {
         rvlBetButton2.setOnAction(e -> {
             if (isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
                 pastWagers.addWager("Raptors vs. Lakers " + rvlAmountInput.getText());
+                Label l = new Label("Raptors vs. Lakers " + rvlAmountInput.getText());
+                labelList.add(l);
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
-                window.setScene(mainScene);
             } else if (!isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
                 AlertBoxMessage.display("Field Error", "Please enter an Integer");
             }
@@ -367,9 +367,10 @@ public class UI extends Application {
         kvbBetButton2.setOnAction(e -> {
             if (isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
                 pastWagers.addWager("Kings vs. Blazers " + kvbAmountInput2.getText());
+                Label l = new Label("Kings vs. Blazers " + kvbAmountInput2.getText());
+                labelList.add(l);
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
-                window.setScene(mainScene);
             } else if (!isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
                 AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
             }
@@ -429,7 +430,8 @@ public class UI extends Application {
                 AlertBoxMessage.display("Confirmation",
                         "$ " + accountInput1.getText() + " has been withdrawn from your account!");
             } else if (isPositiveInt(accountInput1, accountInput1.getText())) {
-                AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
+                AlertBoxMessage.display("Field Error", "Enter a positive Integer \n"
+                        + "You do not have sufficient balance");
             }
         });
     }

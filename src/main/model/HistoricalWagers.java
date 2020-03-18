@@ -17,6 +17,7 @@ public class HistoricalWagers implements Saveable {
         pastWagers.add(wager);
     }
 
+    // EFFECTS: checks if the list of historicalwagers includes the wager
     public Boolean containsWager(String w) {
         return pastWagers.contains(w);
     }
@@ -29,6 +30,7 @@ public class HistoricalWagers implements Saveable {
         return pastWagers.size();
     }
 
+    // EFFECTS: prints out the lines of wagers
     public String linesOfWagers() {
         String wagerLines = "";
 
