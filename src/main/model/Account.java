@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NegativeAmount;
 import persistance.Saveable;
 
 import java.io.PrintWriter;
@@ -13,17 +14,23 @@ public class Account implements Saveable {
     }
 
 
-    // REQUIRES: Amount must be a positive Integer
+
     // MODIFIES: this
     // EFFECTS: Add the amount onto the balance
-    public void addBalance(Integer amount) {
+    public void addBalance(Integer amount) throws NegativeAmount {
+        if (!(amount > 0)) {
+            throw new NegativeAmount();
+        }
         balance = balance + amount;
     }
 
-    // REQUIRES: Balance must be larger than the amount being subtracted
+
     // MODIFIES: this
     // EFFECTS: Subtracts the amount from the balance
-    public void subtractBalance(Integer amount) {
+    public void subtractBalance(Integer amount) throws NegativeAmount {
+        if (!(amount > 0)) {
+            throw new NegativeAmount();
+        }
         balance = balance - amount;
     }
 

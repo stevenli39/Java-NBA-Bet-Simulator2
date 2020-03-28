@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NegativeAmount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,18 +21,57 @@ class AccountTest {
     }
 
     @Test
-    void testAddBalance() {
-        account.addBalance(20);
+    void testAddBalanceNoException() {
+        try {
+            account.addBalance(20);
+        } catch (NegativeAmount negativeAmount) {
+            fail();
+        }
 
         assertEquals(20, account.getBalance());
     }
 
     @Test
-    void testSubtractBalance() {
-        account.addBalance(30);
-        account.subtractBalance(20);
+    void testAddBalanceExceptionThrown() {
+        try {
+            account.addBalance(-20);
+            fail();
+        } catch (NegativeAmount negativeAmount) {
+            // Expected to catch this exception
+        }
+
+    }
+
+
+    @Test
+    void testSubtractBalanceNoException() {
+        try {
+            account.addBalance(30);
+        } catch (NegativeAmount negativeAmount) {
+            fail();
+        }
+        try {
+            account.subtractBalance(20);
+        } catch (NegativeAmount negativeAmount) {
+            fail();
+        }
 
         assertEquals(10, account.getBalance());
+    }
+
+    @Test
+    void testSubtractBalanceExceptionThrown() {
+        try {
+            account.addBalance(30);
+        } catch (NegativeAmount negativeAmount) {
+            fail();
+        }
+        try {
+            account.subtractBalance(-20);
+            fail();
+        } catch (NegativeAmount negativeAmount) {
+            // Expected to catch this exception
+        }
     }
 
 }

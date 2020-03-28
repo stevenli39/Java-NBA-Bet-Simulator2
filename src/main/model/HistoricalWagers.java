@@ -35,7 +35,7 @@ public class HistoricalWagers implements Saveable {
         String wagerLines = "";
 
         if (pastWagers.size() > 0) {
-            for (String wager: pastWagers) {
+            for (String wager : pastWagers) {
                 wagerLines = wagerLines + wager + "\n";
             }
 
@@ -47,7 +47,7 @@ public class HistoricalWagers implements Saveable {
 
     @Override
     public void save(PrintWriter printWriter) {
-        for (String i: pastWagers) {
+        for (String i : pastWagers) {
             printWriter.print(i);
             printWriter.print("\n");
         }

@@ -38,3 +38,9 @@ the information will automatically save.
 - You can reload the state of my application simply by starting up the application again. There is no button 
  that loads the data in the actual application as Professor Felix Grund said that having the state of the application
  upon start is sufficient. Piazza post @1017. 
+ 
+ ## **Phase 4: Task 2** 
+ - I have chosen to test and design a robust class. I have implemented this in the Account class. addBalance and 
+ subtractBalance methods now both throw a NegativeAmount exception whenever a negative Integer is entered as a 
+ parameter. This was done because you can not subtract or add a negative dollar amount. Associated tests have been
+ added to the AccountTest class. 

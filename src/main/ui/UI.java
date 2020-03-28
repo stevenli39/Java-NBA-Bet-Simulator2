@@ -1,6 +1,7 @@
 package ui;
 
 
+import exceptions.NegativeAmount;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -408,7 +409,11 @@ public class UI extends Application {
         accountButton2.setOnAction(e -> window.setScene(mainScene));
         accountButton.setOnAction(e -> {
             if (isPositiveInt(accountInput1, accountInput1.getText())) {
-                account.addBalance(Integer.parseInt(accountInput1.getText()));
+                try {
+                    account.addBalance(Integer.parseInt(accountInput1.getText()));
+                } catch (NegativeAmount negativeAmount) {
+                    negativeAmount.printStackTrace();
+                }
                 window.setScene(mainScene);
                 balanceLabel4.setText("Your balance is: " + "$ " + account.getBalance());
                 AlertBoxMessage.display("Confirmation",
@@ -424,7 +429,11 @@ public class UI extends Application {
         accountButton3.setOnAction(e -> {
             if ((isPositiveInt(accountInput1, accountInput1.getText()))
                     && (account.getBalance() > (Integer.parseInt(accountInput1.getText())))) {
-                account.subtractBalance((Integer.parseInt(accountInput1.getText())));
+                try {
+                    account.subtractBalance((Integer.parseInt(accountInput1.getText())));
+                } catch (NegativeAmount negativeAmount) {
+                    negativeAmount.printStackTrace();
+                }
                 window.setScene(mainScene);
                 balanceLabel4.setText("Your balance is: " + "$" + account.getBalance());
                 AlertBoxMessage.display("Confirmation",

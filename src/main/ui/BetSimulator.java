@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.NegativeAmount;
 import model.*;
 import persistance.Reader;
 import persistance.Writer;
@@ -106,7 +107,7 @@ public class BetSimulator {
     private void loadHistoricalWagers() {
         try {
             List<String> historicalWagers = Reader.readFile(new File(HISTORICAL_FILE));
-            for (String i: historicalWagers) {
+            for (String i : historicalWagers) {
                 pastWagers.addWager(i);
             }
         } catch (IOException e) {
@@ -177,15 +178,19 @@ public class BetSimulator {
     private void betRaptors() {
         System.out.println("How much do you want to wager, Please enter a positive Integer");
         Integer wagerAmount = input.nextInt();
-        if (account.getBalance() > wagerAmount) {
-            System.out.println("Your wager has been successfully placed");
-            System.out.println("Raptors won 119-110 against the Lakers");
-            System.out.println("You have doubled your wager");
+        try {
             account.addBalance(wagerAmount);
-
             pastWagers.addWager("Raptors vs. Lakers, $" + wagerAmount);
-        } else {
-            System.out.println("You do not have enough money");
+            if (account.getBalance() > wagerAmount) {
+                System.out.println("Your wager has been successfully placed");
+                System.out.println("Raptors won 119-110 against the Lakers");
+                System.out.println("You have doubled your wager");
+
+            } else {
+                System.out.println("You do not have enough money");
+            }
+        } catch (NegativeAmount negativeAmount) {
+            System.out.println("Enter a positive Integer");
         }
     }
 
@@ -193,12 +198,16 @@ public class BetSimulator {
         System.out.println("How much do you want to wager, Please enter a positive Integer");
         Integer wagerAmount = input.nextInt();
         if (account.getBalance() > wagerAmount) {
-            System.out.println("Your wager has been successfully placed");
-            System.out.println("Lakers lost 110-119 against the Raptors");
-            System.out.println("You have lost all of your wager");
-            account.subtractBalance(wagerAmount);
+            try {
+                account.subtractBalance(wagerAmount);
+                System.out.println("Your wager has been successfully placed");
+                System.out.println("Lakers lost 110-119 against the Raptors");
+                System.out.println("You have lost all of your wager");
+                pastWagers.addWager("Raptors vs. Lakers, $" + wagerAmount);
+            } catch (NegativeAmount negativeAmount) {
+                System.out.println("Enter a positive amount");
+            }
 
-            pastWagers.addWager("Raptors vs. Lakers, $" + wagerAmount);
         } else {
             System.out.println("You do not have enough money");
         }
@@ -221,12 +230,15 @@ public class BetSimulator {
         System.out.println("How much do you want to wager, Please enter a positive Integer");
         Integer wagerAmount = input.nextInt();
         if (account.getBalance() > wagerAmount) {
-            System.out.println("Your wager has been successfully placed");
-            System.out.println("Kings lost 101-120 against to the Blazers");
-            System.out.println("You have lost all of your wager");
-            account.subtractBalance(wagerAmount);
-
-            pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
+            try {
+                account.subtractBalance(wagerAmount);
+                System.out.println("Your wager has been successfully placed");
+                System.out.println("Kings lost 101-120 against to the Blazers");
+                System.out.println("You have lost all of your wager");
+                pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
+            } catch (NegativeAmount negativeAmount) {
+                System.out.println("Enter a positive amount");
+            }
         } else {
             System.out.println("You do not have enough money");
         }
@@ -237,12 +249,16 @@ public class BetSimulator {
         System.out.println("How much do you want to wager, Please enter a positive Integer");
         Integer wagerAmount = input.nextInt();
         if (account.getBalance() > wagerAmount) {
-            System.out.println("Your wager has been successfully placed");
-            System.out.println("Blazers won 120-101 against to the Blazers");
-            System.out.println("You have doubled your wager");
-            account.addBalance(wagerAmount);
+            try {
+                account.addBalance(wagerAmount);
+                pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
+                System.out.println("Your wager has been successfully placed");
+                System.out.println("Blazers won 120-101 against to the Blazers");
+                System.out.println("You have doubled your wager");
+            } catch (NegativeAmount negativeAmount) {
+                System.out.println("Enter a positive amount");
+            }
 
-            pastWagers.addWager("Kings vs. Blazers, $" + wagerAmount);
         } else {
             System.out.println("You do not have enough money");
         }
@@ -252,8 +268,13 @@ public class BetSimulator {
         System.out.println("How much money would you like you to add to your balance, Enter a positive Integer");
         Integer amount = input.nextInt();
 
-        account.addBalance(amount);
-        System.out.println("$" + amount + " has been successfully added to your account");
+        try {
+            account.addBalance(amount);
+            System.out.println("$" + amount + " has been successfully added to your account");
+        } catch (NegativeAmount negativeAmount) {
+            System.out.println("Enter a positive amount");
+        }
+
     }
 
 
