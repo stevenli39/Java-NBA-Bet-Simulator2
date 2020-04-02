@@ -77,7 +77,8 @@ class AccountTest {
     @Test
     void testChangeBalance() {
         account.changeBalance(40);
+        account.changeBalance(50);
 
-        assertEquals(40, account.getBalance());
+        assertEquals(50, account.getBalance());
     }
 }
