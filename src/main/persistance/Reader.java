@@ -1,7 +1,6 @@
 package persistance;
 
 import model.Account;
-import model.HistoricalWagers;
 
 import java.io.File;
 import java.io.IOException;

@@ -5,8 +5,6 @@ import exceptions.NegativeAmount;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import model.Account;
 import model.HistoricalWagers;
 import javafx.application.Application;
@@ -19,37 +17,30 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import persistance.Reader;
-import persistance.Writer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class UI extends Application {
 
     private static final String ACCOUNTS_FILE = "./data/accounts.txt";
     private static final String HISTORICAL_FILE = "./data/historicalWagers.txt";
-    private static final String musicFile = "BallinlikeCurryTikTokMeme.mp4";
-    private static final String musicFileClean = "Ballin'LikeCurry(Clean).mp4";
 
     Button msButton1 = new Button();
     Button msButton2 = new Button();
     Button msButton3 = new Button();
     Button msButton4 = new Button();
     Button msButton5 = new Button();
-    Button betSceneButton1 = new Button();
-    Button betSceneButton2 = new Button();
-    Button betSceneButton3 = new Button();
     Button rvlButton1 = new Button();
     Button rvlButton2 = new Button();
     Button kvbButton1 = new Button();
     Button kvbButton2 = new Button();
+    Button betSceneButton1 = new Button();
+    Button betSceneButton2 = new Button();
+    Button betSceneButton3 = new Button();
     Button rvlBetButton1 = new Button();
     Button rvlBetButton2 = new Button();
     Button kvbBetButton1 = new Button();
@@ -62,15 +53,12 @@ public class UI extends Application {
     Scene betScene;
     Scene rvlBetScene;
     Scene kvbBetScene;
-    Scene rvlScene;
-    Scene kvbScene;
     Scene accountScene;
     Scene scene8;
     VBox layout5;
     HistoricalWagers pastWagers = new HistoricalWagers();
     ArrayList<Label> labelList = new ArrayList<>();
     Account account = new Account(0);
-    MediaPlayer mediaPlayer;
     Image image;
     ImageView iv;
     GridPane rvlGrid;
@@ -83,18 +71,25 @@ public class UI extends Application {
     TextField rvlAmountInput;
     TextField kvbAmountInput2;
     TextField accountInput1;
+    Saver saver = new Saver();
+    Initializer initializer = new Initializer();
+    VBox rvl = new VBox(20);
+    VBox kvb = new VBox(20);
+    Scene rvlScene = new Scene(rvl, 500, 350);
+    Scene kvbScene = new Scene(kvb, 500, 350);
+    PositiveIntegerChecker positiveIntegerChecker = new PositiveIntegerChecker();
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         window = primaryStage;
-        loadHistoricalWagers();
-        loadAccounts();
+        initializer.loadAccounts(account);
+        initializer.loadHistoricalWagers(pastWagers);
         programImage();
-        programSound();
+        ProgramSound.play();
         mainScreenButtons();
         mainScreenButtonFunctions();
         mainScreenLayout();
@@ -116,79 +111,94 @@ public class UI extends Application {
     }
 
     private void closeProgram() {
-        saveHistoricalWagers();
-        saveAccounts();
+        saver.save(pastWagers, HISTORICAL_FILE);
+        saver.save(account, ACCOUNTS_FILE);
         window.close();
     }
 
-    private void saveAccounts() {
-        try {
-            Writer writer = new Writer(new File(ACCOUNTS_FILE));
-            writer.write(account);
-            writer.close();
-            System.out.println("Accounts saved to file" + ACCOUNTS_FILE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to save accounts to file" + ACCOUNTS_FILE);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            // this is due to a programming error
-        }
-    }
+    //    private void programSound() {
+//        Media sound = new Media(new File(musicFileClean).toURI().toString());
+//        mediaPlayer = new MediaPlayer(sound);
+//        mediaPlayer.play();
+//        mediaPlayer.setAutoPlay(true);
+//        mediaPlayer.setCycleCount(10);
+//        mediaPlayer.setVolume(1.0);
+//    }
 
-    private void saveHistoricalWagers() {
-        try {
-            Writer writer = new Writer(new File(HISTORICAL_FILE));
-            writer.write(pastWagers);
-            writer.close();
-            System.out.println("HistoricalWagers saved to file" + HISTORICAL_FILE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to save HistoricalWagers to file" + HISTORICAL_FILE);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            // this is due to a programming error
-        }
-    }
+//    ** Factored out saving behaviour into another class **
 
-    private Boolean isPositiveInt(TextField input, String message) {
-        try {
-            int betAmount = Integer.parseInt(input.getText());
-            if (betAmount > 0) {
-                return true;
-            }
-            return false;
-        } catch (NumberFormatException e) {
-            System.out.println("Error: " + message + " is not an Integer");
-            return false;
-        }
-    }
+//    private void saveAccounts() {
+//        try {
+//            Writer writer = new Writer(new File(ACCOUNTS_FILE));
+//            writer.write(account);
+//            writer.close();
+//            System.out.println("Accounts saved to file" + ACCOUNTS_FILE);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to save accounts to file" + ACCOUNTS_FILE);
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            // this is due to a programming error
+//        }
+//    }
 
-    private void loadHistoricalWagers() {
-        try {
-            List<String> historicalWagers = Reader.readFile(new File(HISTORICAL_FILE));
-            for (String i : historicalWagers) {
-                pastWagers.addWager(i);
-            }
-        } catch (IOException e) {
-            initHistoricalWagers();
-        }
-    }
+//    private void saveHistoricalWagers() {
+//        try {
+//            Writer writer = new Writer(new File(HISTORICAL_FILE));
+//            writer.write(pastWagers);
+//            writer.close();
+//            System.out.println("HistoricalWagers saved to file" + HISTORICAL_FILE);
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to save HistoricalWagers to file" + HISTORICAL_FILE);
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            // this is due to a programming error
+//        }
+//    }
 
-    private void initHistoricalWagers() {
-        pastWagers = new HistoricalWagers();
-    }
 
-    private void loadAccounts() {
-        try {
-            List<Account> accounts = Reader.readAccounts(new File(ACCOUNTS_FILE));
-            account = accounts.get(0);
-        } catch (IOException e) {
-            initAccounts();
-        }
-    }
+//  ** Factored Out loading behaviour here **
 
-    private void initAccounts() {
-        account = new Account(200);
-    }
+    //    private void loadHistoricalWagers() {
+//        try {
+//            List<String> historicalWagers = Reader.readFile(new File(HISTORICAL_FILE));
+//            for (String i : historicalWagers) {
+//                pastWagers.addWager(i);
+//            }
+//        } catch (IOException e) {
+//            initHistoricalWagers();
+//        }
+//    }
+//
+//    private void initHistoricalWagers() {
+//        pastWagers = new HistoricalWagers();
+//    }
+//
+//    private void loadAccounts() {
+//        try {
+//            List<Account> accounts = Reader.readAccounts(new File(ACCOUNTS_FILE));
+//            account = accounts.get(0);
+//        } catch (IOException e) {
+//            initAccounts();
+//        }
+//    }
+//
+//    private void initAccounts() {
+//        account = new Account(200);
+//    }
+
+//    public Boolean checkPositiveInteger(TextField input, String message) {
+//        try {
+//            int betAmount = Integer.parseInt(input.getText());
+//            if (betAmount > 0) {
+//                return true;
+//            }
+//
+//            return false;
+//        } catch (NumberFormatException e) {
+//            System.out.println("Error: " + message + " is not an Integer");
+//            return false;
+//        }
+//    }
 
     private void producePastWagerLabels() {
         if (pastWagers.getNumberOfPreviousWagers() > 0) {
@@ -206,14 +216,6 @@ public class UI extends Application {
         }
     }
 
-    private void programSound() {
-        Media sound = new Media(new File(musicFileClean).toURI().toString());
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(10);
-        mediaPlayer.setVolume(1.0);
-    }
 
     private void programImage() {
         image = new Image("file:Michael_Jordan_crying.jpg");
@@ -279,6 +281,7 @@ public class UI extends Application {
         betScene = new Scene(layout2, 500, 350);
     }
 
+
     private void raptorsVLakers() {
         rvlButton1.setText("Raptors");
         rvlButton2.setText("Lakers");
@@ -325,13 +328,13 @@ public class UI extends Application {
         rvlBetButton1.setOnAction(e -> window.setScene(mainScene));
         rvlBetButton2.setText("Bet");
         rvlBetButton2.setOnAction(e -> {
-            if (isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
+            if (positiveIntegerChecker.checkPositiveInteger(rvlAmountInput, rvlAmountInput.getText())) {
                 pastWagers.addWager("Raptors vs. Lakers " + rvlAmountInput.getText());
                 Label l = new Label("Raptors vs. Lakers " + rvlAmountInput.getText());
                 labelList.add(l);
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
-            } else if (!isPositiveInt(rvlAmountInput, rvlAmountInput.getText())) {
+            } else if (!positiveIntegerChecker.checkPositiveInteger(rvlAmountInput, rvlAmountInput.getText())) {
                 AlertBoxMessage.display("Field Error", "Please enter an Integer");
             }
         });
@@ -366,13 +369,13 @@ public class UI extends Application {
         kvbBetButton1.setOnAction(e -> window.setScene(mainScene));
         kvbBetButton2.setText("Bet");
         kvbBetButton2.setOnAction(e -> {
-            if (isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
+            if (positiveIntegerChecker.checkPositiveInteger(kvbAmountInput2, kvbAmountInput2.getText())) {
                 pastWagers.addWager("Kings vs. Blazers " + kvbAmountInput2.getText());
                 Label l = new Label("Kings vs. Blazers " + kvbAmountInput2.getText());
                 labelList.add(l);
                 window.setScene(mainScene);
                 AlertBoxMessage.display("Confirmation", "Your Bet Has Been Placed!");
-            } else if (!isPositiveInt(kvbAmountInput2, kvbAmountInput2.getText())) {
+            } else if (!positiveIntegerChecker.checkPositiveInteger(kvbAmountInput2, kvbAmountInput2.getText())) {
                 AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
             }
         });
@@ -408,7 +411,7 @@ public class UI extends Application {
         accountButton2.setText("Back to Main Menu");
         accountButton2.setOnAction(e -> window.setScene(mainScene));
         accountButton.setOnAction(e -> {
-            if (isPositiveInt(accountInput1, accountInput1.getText())) {
+            if (positiveIntegerChecker.checkPositiveInteger(accountInput1, accountInput1.getText())) {
                 try {
                     account.addBalance(Integer.parseInt(accountInput1.getText()));
                 } catch (NegativeAmount negativeAmount) {
@@ -418,7 +421,7 @@ public class UI extends Application {
                 balanceLabel4.setText("Your balance is: " + "$ " + account.getBalance());
                 AlertBoxMessage.display("Confirmation",
                         "$ " + accountInput1.getText() + " has been added to your account!");
-            } else if (!isPositiveInt(accountInput1, accountInput1.getText())) {
+            } else if (!positiveIntegerChecker.checkPositiveInteger(accountInput1, accountInput1.getText())) {
                 AlertBoxMessage.display("Field Error", "Please Enter an Integer!");
             }
         });
@@ -427,7 +430,7 @@ public class UI extends Application {
     private void accountButtonSubtractBalance() {
         accountButton3.setText("Withdrawal");
         accountButton3.setOnAction(e -> {
-            if ((isPositiveInt(accountInput1, accountInput1.getText()))
+            if ((positiveIntegerChecker.checkPositiveInteger(accountInput1, accountInput1.getText()))
                     && (account.getBalance() > (Integer.parseInt(accountInput1.getText())))) {
                 try {
                     account.subtractBalance((Integer.parseInt(accountInput1.getText())));
@@ -438,7 +441,7 @@ public class UI extends Application {
                 balanceLabel4.setText("Your balance is: " + "$" + account.getBalance());
                 AlertBoxMessage.display("Confirmation",
                         "$ " + accountInput1.getText() + " has been withdrawn from your account!");
-            } else if (isPositiveInt(accountInput1, accountInput1.getText())) {
+            } else if (positiveIntegerChecker.checkPositiveInteger(accountInput1, accountInput1.getText())) {
                 AlertBoxMessage.display("Field Error", "Enter a positive Integer \n"
                         + "You do not have sufficient balance");
             }
@@ -454,6 +457,7 @@ public class UI extends Application {
                 accountInput1, balanceLabel4);
         accountScene = new Scene(accountGrid, 500, 350);
     }
+
 
     private void mainScreenInitialization() {
         window.setOnCloseRequest(e -> closeProgram());

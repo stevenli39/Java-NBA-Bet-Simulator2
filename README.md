@@ -44,3 +44,19 @@ the information will automatically save.
  subtractBalance methods now both throw a NegativeAmount exception whenever a negative Integer is entered as a 
  parameter. This was done because you can not subtract or add a negative dollar amount. Associated tests have been
  added to the AccountTest class.
+  
+ ## **Phase 4: Task 3** 
+ - First cohesion issue: In my UI class, many methods or functionality are not directly related to the UI. For example, 
+ I took the saving and loading behaviour from main and directly copied and pasted it onto the UI. It should have been 
+ refactored out into its own separate classes as it has no relationship with the UI. I have commented out the methods in
+ the UI which I have refactored out and the new classes I added are Saver and Initializer. In addition, I noticed that 
+ the code in the ProgramSound class and the PositiveIntegerChecker which was originally in my UI could be refactored as 
+ the UI should be focused solely on the functionality and display of the application. I have also placed comments above 
+ the commented out methods to provide further detail in the UI class. 
+ 
+ - Second cohesion issue: There is repetition between the code, in the saving of methods that were previously in the UI. 
+ -Solution to the Saver repetition: Originally I had one method each for Saving the accounts and pastwagers, but I 
+ noticed that the only two points of variance between the two methods were the files that they saved to and the Saveable 
+ classes that it was writing. I refactored the common behaviour into one method and created parameters for the 
+ Saveable class that it was writing and the data file that it was writing the data to. This would have become tedious
+ and repetitive issue if I needed to save more classes in the future. 

@@ -24,7 +24,6 @@ public class Account implements Saveable {
         balance = balance + amount;
     }
 
-
     // MODIFIES: this
     // EFFECTS: Subtracts the amount from the balance
     public void subtractBalance(Integer amount) throws NegativeAmount {
@@ -32,6 +31,10 @@ public class Account implements Saveable {
             throw new NegativeAmount();
         }
         balance = balance - amount;
+    }
+
+    public void changeBalance(Integer amount) {
+        balance = amount;
     }
 
     public Integer getBalance() {

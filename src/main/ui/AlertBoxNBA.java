@@ -1,12 +1,9 @@
 package ui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.control.*;
 import javafx.geometry.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
