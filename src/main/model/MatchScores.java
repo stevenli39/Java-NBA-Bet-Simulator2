@@ -24,19 +24,21 @@ public class MatchScores {
     public Integer getNumberOfMatchScores() {
         return matchScores.size();
     }
+
+    public String linesOfMatchScores() {
+        String matchLines = "";
+
+        if (matchScores.size() > 0) {
+            for (MatchScore m : matchScores) {
+                matchLines = matchLines + m.getScore1() + " vs. " + m.getScore2() + "\n";
+            }
+
+            return matchLines;
+        }
+
+        return "No matches today";
+    }
 }
 
 
-//     public String matchScoreLines() {
-//     String acc = "";
-//
-//     if (matchScores.size() > 0) {
-//     for (MatchScore m : matchScores) {
-//                 acc = acc + m;
-//                 }
-//            return acc;
-//        }
-//
-//        return "No games Played Today";
-//    }
 

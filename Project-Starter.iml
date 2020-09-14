@@ -24,5 +24,15 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="com.squareup.okhttp:benchmarks:2.7.5" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../json-20200518.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
