@@ -7,6 +7,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import model.Account;
 import model.HistoricalWagers;
+import model.API2;
+import model.Match;
+import model.Matches;
+import javafx.util.Pair;
+import model.MatchScore;
+import model.MatchScores;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
@@ -29,6 +36,9 @@ public class UI extends Application {
     private static final String ACCOUNTS_FILE = "./data/accounts.txt";
     private static final String HISTORICAL_FILE = "./data/historicalWagers.txt";
 
+    API2 api = new API2();
+    ArrayList<Match> matches = new ArrayList();
+    ArrayList<MatchScore> matchScores = new ArrayList();
     Button msButton1 = new Button();
     Button msButton2 = new Button();
     Button msButton3 = new Button();
@@ -48,6 +58,7 @@ public class UI extends Application {
     Button accountButton2 = new Button();
     Button accountButton = new Button();
     Button accountButton3 = new Button();
+    ComboBox comboBox = new ComboBox();
     Stage window;
     Scene mainScene;
     Scene betScene;
@@ -79,6 +90,7 @@ public class UI extends Application {
     Scene kvbScene = new Scene(kvb, 500, 350);
     PositiveIntegerChecker positiveIntegerChecker = new PositiveIntegerChecker();
 
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -88,8 +100,8 @@ public class UI extends Application {
         window = primaryStage;
         initializer.loadAccounts(account);
         initializer.loadHistoricalWagers(pastWagers);
+        api.mainCaller();
         programImage();
-        ProgramSound.play();
         mainScreenButtons();
         mainScreenButtonFunctions();
         mainScreenLayout();
@@ -116,89 +128,6 @@ public class UI extends Application {
         window.close();
     }
 
-    //    private void programSound() {
-//        Media sound = new Media(new File(musicFileClean).toURI().toString());
-//        mediaPlayer = new MediaPlayer(sound);
-//        mediaPlayer.play();
-//        mediaPlayer.setAutoPlay(true);
-//        mediaPlayer.setCycleCount(10);
-//        mediaPlayer.setVolume(1.0);
-//    }
-
-//    ** Factored out saving behaviour into another class **
-
-//    private void saveAccounts() {
-//        try {
-//            Writer writer = new Writer(new File(ACCOUNTS_FILE));
-//            writer.write(account);
-//            writer.close();
-//            System.out.println("Accounts saved to file" + ACCOUNTS_FILE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to save accounts to file" + ACCOUNTS_FILE);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//            // this is due to a programming error
-//        }
-//    }
-
-//    private void saveHistoricalWagers() {
-//        try {
-//            Writer writer = new Writer(new File(HISTORICAL_FILE));
-//            writer.write(pastWagers);
-//            writer.close();
-//            System.out.println("HistoricalWagers saved to file" + HISTORICAL_FILE);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to save HistoricalWagers to file" + HISTORICAL_FILE);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//            // this is due to a programming error
-//        }
-//    }
-
-
-//  ** Factored Out loading behaviour here **
-
-    //    private void loadHistoricalWagers() {
-//        try {
-//            List<String> historicalWagers = Reader.readFile(new File(HISTORICAL_FILE));
-//            for (String i : historicalWagers) {
-//                pastWagers.addWager(i);
-//            }
-//        } catch (IOException e) {
-//            initHistoricalWagers();
-//        }
-//    }
-//
-//    private void initHistoricalWagers() {
-//        pastWagers = new HistoricalWagers();
-//    }
-//
-//    private void loadAccounts() {
-//        try {
-//            List<Account> accounts = Reader.readAccounts(new File(ACCOUNTS_FILE));
-//            account = accounts.get(0);
-//        } catch (IOException e) {
-//            initAccounts();
-//        }
-//    }
-//
-//    private void initAccounts() {
-//        account = new Account(200);
-//    }
-
-//    public Boolean checkPositiveInteger(TextField input, String message) {
-//        try {
-//            int betAmount = Integer.parseInt(input.getText());
-//            if (betAmount > 0) {
-//                return true;
-//            }
-//
-//            return false;
-//        } catch (NumberFormatException e) {
-//            System.out.println("Error: " + message + " is not an Integer");
-//            return false;
-//        }
-//    }
 
     private void producePastWagerLabels() {
         if (pastWagers.getNumberOfPreviousWagers() > 0) {
@@ -218,7 +147,6 @@ public class UI extends Application {
 
 
     private void programImage() {
-        image = new Image("file:Michael_Jordan_crying.jpg");
         iv = new ImageView();
         iv.setFitWidth(500);
         iv.setFitHeight(350);
@@ -269,15 +197,17 @@ public class UI extends Application {
 
     private void betSceneLayout() {
         betSceneButton1.setText("Back");
-        betSceneButton2.setText("Raptors vs. Lakers");
-        betSceneButton3.setText("Kings vs. Blazers");
         betSceneButton1.setOnAction(e -> window.setScene(mainScene));
-        betSceneButton2.setOnAction(e -> window.setScene(rvlScene));
-        betSceneButton3.setOnAction((e -> window.setScene(kvbScene)));
+        matches = api.matches;
+
+        for (Match m : matches) {
+            comboBox.getItems().add(m.getTeam1() + " vs " + m.getTeam2());
+        }
+
 
         VBox layout2 = new VBox(30);
         layout2.setAlignment(Pos.CENTER);
-        layout2.getChildren().addAll(betSceneButton2, betSceneButton3, betSceneButton1);
+        layout2.getChildren().addAll(comboBox, betSceneButton1);
         betScene = new Scene(layout2, 500, 350);
     }
 
